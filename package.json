@@ -1,0 +1,35 @@
+{
+  "name": "pinbook",
+  "version": "0.0.1",
+  "description": "A simple Bookmark App",
+  "main": "server.js",
+  "repository": "git@github.com:eschocolat/pinbook.git",
+  "author": "eschocolat",
+  "license": "MIT",
+  "scripts": {
+    "start": "npm run build && cross-env NODE_ENV=production node_modules/.bin/babel-node --presets react,es2015 app/server.js",
+    "build": "cross-env NODE_ENV=production node_modules/.bin/webpack -p"
+  },
+  "devDependencies": {
+    "react-hot-loader": "^1.3.1",
+    "webpack": "^2.2.1",
+    "webpack-dev-server": "2"
+  },
+  "dependencies": {
+    "babel-cli": "^6.23.0",
+    "babel-core": "^6.23.1",
+    "babel-loader": "^6.4.0",
+    "babel-plugin-react-html-attrs": "^2.0.0",
+    "babel-preset-es2015": "^6.22.0",
+    "babel-preset-react": "^6.23.0",
+    "babel-preset-react-hmre": "^1.1.1",
+    "body-parser": "^1.17.1",
+    "cross-env": "^3.2.3",
+    "ejs": "^2.5.6",
+    "express": "^4.15.2",
+    "express-handlebars": "^3.0.0",
+    "react": "^15.4.2",
+    "react-dom": "^15.4.2",
+    "react-router": "^3.0.2"
+  }
+}
