@@ -8,12 +8,14 @@
   "license": "MIT",
   "scripts": {
     "start": "npm run build && cross-env NODE_ENV=production node_modules/.bin/babel-node --presets react,es2015 app/server.js",
-    "build": "cross-env NODE_ENV=production node_modules/.bin/webpack -p"
+    "build": "cross-env NODE_ENV=production node_modules/.bin/webpack -p",
+    "dev": "npm run dev:react & npm run dev:server",
+    "dev:react": "cross-env NODE_ENV=development node_modules/.bin/webpack -w",
+    "dev:server": "cross-env NODE_ENV=development node_modules/.bin/nodemon app/server.js --exec node_modules/.bin/babel-node --presets react,es2015"
   },
   "devDependencies": {
-    "react-hot-loader": "^1.3.1",
-    "webpack": "^2.2.1",
-    "webpack-dev-server": "2"
+    "nodemon": "^1.11.0",
+    "webpack": "^2.2.1"
   },
   "dependencies": {
     "babel-cli": "^6.23.0",

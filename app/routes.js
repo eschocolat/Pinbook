@@ -6,6 +6,10 @@ import routes from './client/routes';
 
 const router = express.Router();
 
+router.get('/test', (req, res) => {
+    res.send('test');
+});
+
 router.get('*', (req, res) => {
     match({
         routes,
@@ -26,9 +30,7 @@ router.get('*', (req, res) => {
         // generate the React markup for the current route
         let markup;
 
-        // if the current route matched we have renderProps
         markup = renderToString(<RouterContext {...renderProps}/>);
- 
 
         // render the index template with the embedded React markup
         return res.render('index', {markup});

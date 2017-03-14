@@ -2,7 +2,7 @@ import React from 'react';
 import { IndexRoute, Route } from 'react-router';
 
 import App from './app';
-import Main from './main/main';
+import Main from './main/Main';
 import NotFound from './404/NotFound';
 
 export default (
