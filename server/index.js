@@ -2,15 +2,37 @@ import path from 'path';
 import express from 'express';
 import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
-import exphbs from 'express-handlebars';
+import morgan from 'morgan';
 import routes from './routes';
 import config from './config';
+import { renderFile } from 'ejs';
 
 const app = express();
 
 /*
  |--------------------------------------------------------------------------
- | config
+ | development
+ |--------------------------------------------------------------------------
+ */
+if(process.env.NODE_ENV == 'development') {
+    app.use(morgan('dev'))
+    console.log('Server is running on development mode');
+
+    const WebpackDevServer = require('webpack-dev-server');
+    const webpack = require('webpack');
+ 
+    const devConfig = require('../webpack.config');
+    let compiler = webpack(devConfig);
+    let devServer = new WebpackDevServer(compiler, devConfig.devServer);
+    devServer.listen(config.DEV_PORT, () => {
+        console.log(`webpack-dev-server is listening on port ${config.DEV_PORT}`);
+    });
+}
+
+
+/*
+ |--------------------------------------------------------------------------
+ | mongo DB
  |--------------------------------------------------------------------------
  */
 mongoose.connect(config.MONGO_URI);
@@ -23,12 +45,9 @@ mongoose.connection.on('error', () => {
  | view engine
  |------------------------------------------------------------------------------
  */
-app.engine('handlebars', exphbs({
-    defaultLayout: 'main', 
-    layoutsDir: path.resolve(__dirname, 'views', 'layouts')
-}));
-app.set('view engine', 'handlebars');
 app.set('views', path.resolve(__dirname, 'views'));
+app.set('view engine', 'ejs');
+app.engine('html', renderFile);
 
 /*
  |------------------------------------------------------------------------------
@@ -62,5 +81,5 @@ app.listen(config.PORT, err => {
     if (err) {
         return console.error(err);
     }
-    console.info(`Server running on http://localhost:${config.PORT} [${config.ENV}]`);
+    console.info(`Server running on ${config.DOMAIN} [${config.ENV}]`);
 });

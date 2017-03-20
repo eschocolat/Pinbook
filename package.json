@@ -2,40 +2,46 @@
   "name": "pinbook",
   "version": "0.0.1",
   "description": "A simple Bookmark App",
-  "main": "server.js",
+  "main": "index.js",
   "repository": "git@github.com:eschocolat/pinbook.git",
   "author": "eschocolat",
   "license": "MIT",
   "scripts": {
-    "start": "npm run build && cross-env NODE_ENV=production node_modules/.bin/babel-node --presets react,es2015 app/server.js",
-    "build": "cross-env NODE_ENV=production node_modules/.bin/webpack -p",
-    "dev": "npm run dev:react & npm run dev:server",
-    "dev:react": "cross-env NODE_ENV=development node_modules/.bin/webpack -w",
-    "dev:server": "cross-env NODE_ENV=development node_modules/.bin/nodemon app/server.js --exec node_modules/.bin/babel-node --presets react,es2015"
+    "build": "node_modules/.bin/webpack --config webpack.production.config.js --progress --profile --colors",
+    "start": "npm run build && cross-env NODE_ENV=production nodemon index.js",
+    "dev": "cross-env NODE_ENV=development node index.js"
   },
   "devDependencies": {
-    "nodemon": "^1.11.0",
-    "webpack": "^2.2.1"
-  },
-  "dependencies": {
-    "babel-cli": "^6.23.0",
     "babel-core": "^6.23.1",
     "babel-loader": "^6.4.0",
-    "babel-plugin-react-html-attrs": "^2.0.0",
     "babel-preset-es2015": "^6.22.0",
     "babel-preset-react": "^6.23.0",
-    "babel-preset-react-hmre": "^1.1.1",
+    "cross-env": "^3.2.3",
+    "css-loader": "^0.27.3",
+    "extract-text-webpack-plugin": "^2.1.0",
+    "html-webpack-plugin": "^2.28.0",
+    "node-sass": "^4.5.0",
+    "nodemon": "^1.11.0",
+    "postcss-loader": "^1.3.3",
+    "react": "^15.4.2",
+    "react-dom": "^15.4.2",
+    "react-hot-loader": "3.0.0-beta.6",
+    "react-router": "^3.0.2",
+    "sass-loader": "^6.0.3",
+    "style-loader": "^0.14.1",
+    "url-loader": "^0.5.8",
+    "webpack": "^2.2.1",
+    "webpack-cleanup-plugin": "^0.5.1",
+    "webpack-dev-server": "^2.4.2"
+  },
+  "dependencies": {
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.17.1",
-    "cross-env": "^3.2.3",
+    "ejs": "^2.5.6",
     "express": "^4.15.2",
-    "express-handlebars": "^3.0.0",
     "jsonwebtoken": "^7.3.0",
     "moment": "^2.17.1",
     "mongoose": "^4.9.0",
-    "morgan": "^1.8.1",
-    "react": "^15.4.2",
-    "react-dom": "^15.4.2",
-    "react-router": "^3.0.2"
+    "morgan": "^1.8.1"
   }
 }

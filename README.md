@@ -28,5 +28,12 @@ $ yarn start
 ```
 You can access the application's server http://localhost:3000.
 
+or run development using:
+
+```bash
+$ yarn dev
+```
+You can access the application's server http://localhost:3001.
+
 ## License
 Licensed under [MIT License](LICENSE). © Eschocolat

@@ -29,7 +29,6 @@ jspm_packages
 babel_cache
 
 # Secret files
-# app/config.js
 
-app/public/css/
-app/public/js/
+server/public/
+server/views/

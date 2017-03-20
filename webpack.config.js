@@ -1,45 +1,64 @@
 "use strict";
 
-const debug = process.env.NODE_ENV !== "production";
+var webpack = require('webpack');
+var path = require('path');
+var loaders = require('./webpack.loaders');
+var HtmlWebpackPlugin = require('html-webpack-plugin');
+var ExtractTextPlugin = require('extract-text-webpack-plugin');
+var config = require('./server/config');
 
-const webpack = require('webpack');
-const path = require('path');
+loaders.push({
+    test: /\.scss$/,
+    loaders: ['style-loader', 'css-loader?importLoaders=1', 'sass-loader'],
+    exclude: ['node_modules']
+});
 
-var webpackConfig = {
-    devtool: debug ? 'inline-sourcemap' : false,
-    context: path.resolve(__dirname, 'app'),
-    entry: {
-        app: './client.js',
-    },
+module.exports = {
+    entry: [
+        `webpack-dev-server/client?${config.DEV_DOMAIN}`,
+        'webpack/hot/only-dev-server',
+        'react-hot-loader/patch',
+        './client/app.js'
+    ],
+    devtool: process.env.WEBPACK_DEVTOOL || 'eval-source-map',
     output: {
-        path: path.resolve(__dirname, 'app', 'public', 'js'),
-        filename: 'bundle.js',
+        publicPath: '/',
+        path: path.resolve(__dirname, 'server', 'public'),
+        filename: 'bundle.js'
+    },
+    resolve: {
+        extensions: ['.js', '.jsx']
     },
     module: {
-        rules: [{
-            test: path.resolve(__dirname, 'app'),
-            use: [{
-                loader: 'babel-loader',
-                options: {
-                    presets: debug ? ['react', 'es2015', 'react-hmre'] : ['react', 'es2015']
-                }
-            }],
-        }]
+        loaders
     },
-    plugins: debug ? [] : [
-        new webpack.DefinePlugin({
-            'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
+    devServer: {
+        contentBase: path.resolve(__dirname, 'server', 'public'),
+        // do not print bundle build stats
+        noInfo: true,
+        // enable HMR
+        hot: true,
+        // embed the webpack-dev-server runtime into the bundle
+        inline: true,
+        // serve index.html in place of 404 responses to allow HTML5 history
+        historyApiFallback: true,
+        proxy: {
+            '**': [{target: config.DOMAIN}]
+        }
+    },
+    plugins: [
+        new webpack.NoEmitOnErrorsPlugin(),
+        new webpack.HotModuleReplacementPlugin(),
+        new ExtractTextPlugin({
+                filename: 'style.css',
+                allChunks: true
         }),
-        new webpack.optimize.UglifyJsPlugin({
-            compress: {
-                warnings: false
-            },
-            mangle: true,
-            sourcemap: false,
-            beautify: false,
-            dead_code: true
+        new HtmlWebpackPlugin({
+            template: './client/template.html',
+            files: {
+                css: ['style.css'],
+                js: [ "bundle.js"],
+            }
         }),
     ]
-}
-
-module.exports = webpackConfig;
+};

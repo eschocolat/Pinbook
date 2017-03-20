@@ -2,7 +2,6 @@ import express from 'express';
 import config from './config';
 import middler from './modules/middlewares';
 import userCtrl from './controllers/userCtrl';
-import reactRender from './controllers/reactRender';
 
 const router = express.Router();
 const ensureAuth = middler.ensureAuthenticated({ secret: config.TOKEN_SECRET});
@@ -23,6 +22,11 @@ router.post('/api/signup', userApi.signup);
  | react rendering
  |--------------------------------------------------------------------------
  */
-router.get('*', reactRender);
+router.get('*', (req, res) => {
+    if (config.ENV === 'development') {
+        return res.redirect(config.DEV_DOMAIN);
+    }
+    return res.render('index.html');
+});
 
 module.exports = router;
